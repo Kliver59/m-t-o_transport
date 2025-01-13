@@ -1,9 +1,30 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Météo des Transports</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body></body>
+  <body>
+    <div id="weather-screen">
+      <!-- Nom de la compagnie de transport -->
+      <div id="company-name" class="company-name-container">
+        <!-- Le nom de la compagnie de transport sera affiché ici -->
+        TRAVEL LINE
+      </div>
+
+      <!-- Affichage de la date et de l'heure -->
+      <div id="date-time" class="date-time-container">
+        <!-- La date et l'heure actuelles seront affichées ici -->
+      </div>
+
+      <!-- Villes sous forme de petites cartes -->
+      <div id="city-cards-container">
+        <!-- Les villes seront affichées sous forme de cartes ici -->
+      </div>
+    </div>
+
+    <script src="meteo.js"></script>
+  </body>
 </html>
