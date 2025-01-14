@@ -26,7 +26,6 @@ setInterval(updateDateTime, 1000);
 updateDateTime();
 
 // Code pour récupérer les données météo et afficher les villes comme précédemment
-
 fetch("conf.json")
   .then((response) => {
     if (!response.ok) {
@@ -61,14 +60,38 @@ fetch("conf.json")
             const wind = data.wind.speed ? `Vent : ${data.wind.speed} m/s` : "";
             const rain = data.rain ? `Pluie : ${data.rain["1h"]} mm` : "";
 
+            // Détecter les conditions spécifiques (soleil, neige, orage)
+            const condition = data.weather[0].main; // Exemple : "Clear", "Rain", "Snow", "Thunderstorm"
+            let conditionMessage = "";
+            let iconSrc = "";
+
+            // Définir l'icône personnalisée en fonction de la condition
+            if (condition === "Clear") {
+              conditionMessage = "Temps ensoleillé";
+              iconSrc = "images/soleil.png"; // Remplacer par votre icône de soleil
+            } else if (condition === "Snow") {
+              conditionMessage = "Il neige";
+              iconSrc = "images/snow.png"; // Remplacer par votre icône de neige
+            } else if (condition === "Thunderstorm") {
+              conditionMessage = "Orage";
+              iconSrc = "images/thunderstorm.png"; // Remplacer par votre icône d'orage
+            } else if (condition === "Rain") {
+              conditionMessage = "Pluie";
+              iconSrc = "images/rain.png"; // Remplacer par votre icône de pluie
+            } else {
+              conditionMessage = data.weather[0].description; // Si c'est une autre condition
+              iconSrc = "images/nuage.png"; // Par défaut, utiliser une icône de nuages
+            }
+
+            // Mise à jour de la carte de la ville
             cityContainer.innerHTML = `
-                            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}.png" alt="${data.weather[0].description}">
-                            <h2>${data.name}</h2>
-                            <p class="temp">${data.main.temp.toFixed(1)}°C</p>
-                            <p class="condition">${data.weather[0].description}</p>
-                            <p class="additional-info">${wind}</p>
-                            <p class="additional-info">${rain}</p>
-                        `;
+              <img src="${iconSrc}" alt="${data.weather[0].description}" />
+              <h2>${data.name}</h2>
+              <p class="temp">${data.main.temp.toFixed(1)}°C</p>
+              <p class="condition">${conditionMessage}</p>
+              <p class="additional-info">${wind}</p>
+              <p class="additional-info">${rain}</p>
+            `;
 
             // Ajoute la carte de la ville dans le conteneur principal
             document
@@ -86,7 +109,7 @@ fetch("conf.json")
         );
     };
 
-    // Mettre à jour toutes les villes
+    // Mettre à jour la météo pour toutes les villes présentes dans le fichier conf.json
     cities.forEach((city) => {
       updateWeatherForCity(city);
     });
@@ -95,6 +118,7 @@ fetch("conf.json")
     console.error("Erreur lors du chargement de la configuration :", error)
   );
 
+// Exemple de titre
 const Title = "Bienvenue dans mon projet WEB météo";
 
 console.log(Title);
